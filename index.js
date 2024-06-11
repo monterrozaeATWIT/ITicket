@@ -1,5 +1,5 @@
 const express = require('express');
-const path = require('path'); // Add this line to import the path module
+const path = require('path'); 
 const app = express();
 const port = 3000;
 
@@ -10,6 +10,7 @@ const cors = require('cors');
 app.use(bodyParser.json());
 app.use(cors());
 
+// Declare local MongoDB
 const mongoUri = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/ticketing';
 
 mongoose.connect(mongoUri, {
@@ -24,6 +25,7 @@ mongoose.connect(mongoUri, {
 // Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Load index page
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
@@ -32,7 +34,7 @@ app.get('/', (req, res) => {
 app.use('/users', require('./routes/users'));
 app.use('/tickets', require('./routes/tickets'));
 
-
+// Start listener
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
 });
