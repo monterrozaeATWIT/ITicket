@@ -30,7 +30,7 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Routes
+// Routes for APIs
 app.use('/users', require('./routes/users'));
 app.use('/tickets', require('./routes/tickets'));
 
