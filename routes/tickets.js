@@ -13,4 +13,18 @@ router.post('/', async (req, res) => {
   }
 });
 
+// Edit an existing ticket with provided ticket ID
+router.put('/:id', async (req, res) => {
+  try {
+    const ticket = await Ticket.findByIdAndUpdate(req.params.id, req.body, {
+      new: true, 
+      runValidators: true
+    });
+
+    res.send(ticket);
+  } catch (err) {
+    res.status(404).send({ error: 'Ticket not found' });
+  }
+});
+
 module.exports = router;
