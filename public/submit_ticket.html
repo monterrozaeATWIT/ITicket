@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Submit Ticket - IT Ticketing System</title>
+  
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f2f2f2;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 20px auto;
+      background-color: #34bba5;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #000;
+    }
+
+    .ticket-form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      font-weight: bold;
+      color: #000;
+    }
+
+    .form-group select,
+    .form-group input[type="text"],
+    .form-group textarea {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .form-group input[type="submit"] {
+      width: auto;
+      padding: 10px 20px;
+      background-color: #000;
+      color: #fff;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .form-group input[type="submit"]:hover {
+      background-color: #646970;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Submit Ticket</h1>
+  <form class="ticket-form" id="ticketForm">
+    <div class="form-group">
+      <label for="department">Select Department:</label>
+      <select id="department" name="department">
+        <option value="Select a Department">Select a Department</option>
+        <option value="IT">IT</option>
+        <option value="HR">HR</option>
+        <option value="Sales">Sales</option>
+        <option value="Marketing">Marketing</option>
+        <option value="Engineering">Engineering</option>
+        <option value="Finance">Finance</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="priority">Priority:</label>
+      <select id="priority" name="priority">
+        <option value="Low">Low</option>
+        <option value="Medium">Medium</option>
+        <option value="High">High</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="subject">Subject:</label>
+      <input type="text" id="subject" name="subject" required>
+    </div>
+    <div class="form-group">
+      <label for="description">Description:</label>
+      <textarea id="description" name="description" required></textarea>
+    </div>
+    <div class="form-group">
+      <input type="submit" value="Submit Ticket">
+    </div>
+  </form>
+</div>
+
+<script>
+document.getElementById('ticketForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
+    const department = document.getElementById('department').value;
+    const priority = document.getElementById('priority').value;
+    const subject = document.getElementById('subject').value;
+    const description = document.getElementById('description').value;
+
+    const response = await fetch('http://localhost:5000/submit-ticket', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ department, priority, subject, description })
+    });
+
+    if (response.status === 201) {
+        alert('Ticket submitted successfully');
+    } else {
+        alert('Error submitting ticket');
+    }
+});
+</script>
+</body>
+</html>
