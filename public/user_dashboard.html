@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Tickets - IT Ticketing System</title>
+    <title>User Dashboard - IT Ticketing System</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -12,7 +12,7 @@
             background-color: #f2f2f2;
         }
         .container {
-            max-width: 800px;
+            max-width: 1000px;
             margin: 20px auto;
             background-color: #fff;
             padding: 20px;
@@ -35,6 +35,15 @@
         }
         th {
             background-color: #f4f4f4;
+        }
+        .button-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
         }
         .modal {
             display: none;
@@ -73,7 +82,10 @@
 </head>
 <body>
 <div class="container">
-    <h1>Submitted Tickets</h1>
+    <h1>User Dashboard</h1>
+    <div class="button-container">
+        <button onclick="location.href='submit_ticket.html'">Create Ticket</button>
+    </div>
     <table>
         <thead>
             <tr>

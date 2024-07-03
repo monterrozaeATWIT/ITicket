@@ -16,7 +16,7 @@
     .container {
       max-width: 800px;
       margin: 20px auto;
-      background-color: #34bba5;
+      background-color: #34bba5; /* Background color for the container */
       padding: 20px;
       border-radius: 5px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -24,7 +24,7 @@
 
     h1 {
       text-align: center;
-      color: #000;
+      color: #000; /* Blue color for heading */
     }
 
     .ticket-form {
@@ -38,7 +38,7 @@
 
     .form-group label {
       font-weight: bold;
-      color: #000;
+      color: #000; /* Dark gray color for labels */
     }
 
     .form-group select,
@@ -111,27 +111,38 @@
 </div>
 
 <script>
-document.getElementById('ticketForm').addEventListener('submit', async function(event) {
-    event.preventDefault();
-    const department = document.getElementById('department').value;
-    const priority = document.getElementById('priority').value;
-    const subject = document.getElementById('subject').value;
-    const description = document.getElementById('description').value;
+  document.addEventListener('DOMContentLoaded', function() {
+    function generateTicketNumber() {
+      return Math.floor(Math.random() * 1000000);
+    }
 
-    const response = await fetch('http://localhost:5000/submit-ticket', {
+    document.getElementById('ticket-number').value = generateTicketNumber();
+
+    document.getElementById('ticketForm').addEventListener('submit', async function(event) {
+      event.preventDefault();
+      const department = document.getElementById('department').value;
+      const priority = document.getElementById('priority').value;
+      const subject = document.getElementById('subject').value;
+      const description = document.getElementById('description').value;
+      const token = localStorage.getItem('token');
+
+      const response = await fetch('http://localhost:5000/tickets/submit-ticket', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({ department, priority, subject, description })
-    });
+      });
 
-    if (response.status === 201) {
+      if (response.status === 201) {
         alert('Ticket submitted successfully');
-    } else {
+        window.location.href = 'user_dashboard.html';
+      } else {
         alert('Error submitting ticket');
-    }
-});
+      }
+    });
+  });
 </script>
 </body>
 </html>

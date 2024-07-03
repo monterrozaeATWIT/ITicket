@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Tickets - IT Ticketing System</title>
+    <title>IT Dashboard - Ticketing System</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -12,7 +12,7 @@
             background-color: #f2f2f2;
         }
         .container {
-            max-width: 800px;
+            max-width: 1000px;
             margin: 20px auto;
             background-color: #fff;
             padding: 20px;
@@ -73,7 +73,7 @@
 </head>
 <body>
 <div class="container">
-    <h1>Submitted Tickets</h1>
+    <h1>IT Dashboard</h1>
     <table>
         <thead>
             <tr>
@@ -82,6 +82,7 @@
                 <th>Priority</th>
                 <th>Description</th>
                 <th>Submitted At</th>
+                <th>Opened By</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -98,9 +99,9 @@
 </div>
 
 <script>
-async function fetchUserTickets() {
+async function fetchTickets() {
     const token = localStorage.getItem('token');
-    const response = await fetch('http://localhost:5000/user/tickets', {
+    const response = await fetch('http://localhost:5000/tickets', {
         headers: {
             'Authorization': `Bearer ${token}`
         }
@@ -121,6 +122,7 @@ async function fetchUserTickets() {
             <td>${ticket.priority}</td>
             <td>${ticket.description}</td>
             <td>${new Date(ticket.createdAt).toLocaleString()}</td>
+            <td>${ticket.user.name} (${ticket.user.email})</td>
             <td><button onclick="viewTicket('${ticket._id}')">View Details</button></td>
         `;
         ticketTableBody.appendChild(row);
@@ -146,7 +148,8 @@ async function viewTicket(id) {
         <p><strong>Department:</strong> ${ticket.department}</p>
         <p><strong>Priority:</strong> ${ticket.priority}</p>
         <p><strong>Description:</strong> ${ticket.description}</p>
-        <p><strong>Submitted At:</strong> ${new Date(ticket.createdAt).toLocaleString()}</p>
+        <p><strong>Submitted At:</strong> ${new Date(ticket.createdAt).toLocaleString()}</td>
+        <p><strong>User:</strong> ${ticket.user.name} (${ticket.user.email})</p>
     `;
 
     const modal = document.getElementById('ticketModal');
@@ -167,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    fetchUserTickets();
+    fetchTickets();
 });
 </script>
 </body>
