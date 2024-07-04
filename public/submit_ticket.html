@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Submit Ticket - IT Ticketing System</title>
+  <title>iTicket</title>
   
   <style>
     body {
@@ -16,7 +16,7 @@
     .container {
       max-width: 800px;
       margin: 20px auto;
-      background-color: #34bba5; /* Background color for the container */
+      background-color: #DEB887; /* Background color for the container */
       padding: 20px;
       border-radius: 5px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -24,7 +24,7 @@
 
     h1 {
       text-align: center;
-      color: #000; /* Blue color for heading */
+      color: #000; /* Black color for heading */
     }
 
     .ticket-form {
@@ -48,10 +48,11 @@
       padding: 8px;
       border: 1px solid #ccc;
       border-radius: 3px;
+      box-sizing: border-box; /* Ensure padding is included in width */
     }
 
     .form-group textarea {
-      resize: vertical;
+      resize: none; /* Disable resizing */
       min-height: 100px;
     }
 
@@ -73,11 +74,21 @@
 </head>
 <body>
 
+<!-- The main container for the form -->    
 <div class="container">
-  <h1>Submit Ticket</h1>
-  <form class="ticket-form" id="ticketForm">
+<!-- Main heading for the form -->
+  <h1>iTicket</h1>
+  <form class="ticket-form" id="ticket-form">
+    <div class="form-group">
+      <!-- Label for the ticket number input field -->
+      <label for="ticket-number">Ticket Number:</label>
+      <!-- Input field for ticket number which is read-only -->
+      <input type="text" id="ticket-number" name="ticket-number" readonly>
+    </div>
+    <!-- Form group for departments -->
     <div class="form-group">
       <label for="department">Select Department:</label>
+      <!-- dropdown menu for selecting a department -->
       <select id="department" name="department">
         <option value="Select a Department">Select a Department</option>
         <option value="IT">IT</option>
@@ -86,6 +97,7 @@
         <option value="Marketing">Marketing</option>
         <option value="Engineering">Engineering</option>
         <option value="Finance">Finance</option>
+        <!-- Add more departments -->
       </select>
     </div>
     <div class="form-group">
@@ -94,6 +106,7 @@
         <option value="Low">Low</option>
         <option value="Medium">Medium</option>
         <option value="High">High</option>
+       
       </select>
     </div>
     <div class="form-group">
@@ -117,32 +130,8 @@
     }
 
     document.getElementById('ticket-number').value = generateTicketNumber();
-
-    document.getElementById('ticketForm').addEventListener('submit', async function(event) {
-      event.preventDefault();
-      const department = document.getElementById('department').value;
-      const priority = document.getElementById('priority').value;
-      const subject = document.getElementById('subject').value;
-      const description = document.getElementById('description').value;
-      const token = localStorage.getItem('token');
-
-      const response = await fetch('http://localhost:5000/tickets/submit-ticket', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ department, priority, subject, description })
-      });
-
-      if (response.status === 201) {
-        alert('Ticket submitted successfully');
-        window.location.href = 'user_dashboard.html';
-      } else {
-        alert('Error submitting ticket');
-      }
-    });
   });
 </script>
+
 </body>
 </html>
