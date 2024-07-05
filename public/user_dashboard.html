@@ -36,56 +36,24 @@
         th {
             background-color: #f4f4f4;
         }
-        .button-container {
-            text-align: center;
-            margin-bottom: 20px;
-        }
         button {
             padding: 10px 20px;
-            font-size: 16px;
+            margin-bottom: 20px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
             cursor: pointer;
         }
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgb(0,0,0);
-            background-color: rgba(0,0,0,0.4);
-        }
-        .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 600px;
-            border-radius: 10px;
-        }
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
+        button:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
 <body>
 <div class="container">
     <h1>User Dashboard</h1>
-    <div class="button-container">
-        <button onclick="location.href='submit_ticket.html'">Create Ticket</button>
-    </div>
+    <button onclick="window.location.href='submit_ticket.html'">Create Ticket</button>
     <table>
         <thead>
             <tr>
@@ -94,6 +62,7 @@
                 <th>Priority</th>
                 <th>Description</th>
                 <th>Submitted At</th>
+                <th>Created By</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -101,86 +70,6 @@
     </table>
 </div>
 
-<!-- Modal for viewing ticket details -->
-<div id="ticketModal" class="modal">
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <div id="ticketDetails"></div>
-    </div>
-</div>
-
-<script>
-async function fetchUserTickets() {
-    const token = localStorage.getItem('token');
-    const response = await fetch('http://localhost:5000/user/tickets', {
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    });
-    if (!response.ok) {
-        console.error('Network response was not ok');
-        return;
-    }
-    const tickets = await response.json();
-    const ticketTableBody = document.getElementById('ticketTableBody');
-    ticketTableBody.innerHTML = '';
-
-    tickets.forEach(ticket => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${ticket.subject}</td>
-            <td>${ticket.department}</td>
-            <td>${ticket.priority}</td>
-            <td>${ticket.description}</td>
-            <td>${new Date(ticket.createdAt).toLocaleString()}</td>
-            <td><button onclick="viewTicket('${ticket._id}')">View Details</button></td>
-        `;
-        ticketTableBody.appendChild(row);
-    });
-}
-
-async function viewTicket(id) {
-    const token = localStorage.getItem('token');
-    const response = await fetch(`http://localhost:5000/tickets/${id}`, {
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    });
-    if (!response.ok) {
-        console.error('Network response was not ok');
-        return;
-    }
-
-    const ticket = await response.json();
-    const ticketDetails = document.getElementById('ticketDetails');
-    ticketDetails.innerHTML = `
-        <h3>${ticket.subject}</h3>
-        <p><strong>Department:</strong> ${ticket.department}</p>
-        <p><strong>Priority:</strong> ${ticket.priority}</p>
-        <p><strong>Description:</strong> ${ticket.description}</p>
-        <p><strong>Submitted At:</strong> ${new Date(ticket.createdAt).toLocaleString()}</p>
-    `;
-
-    const modal = document.getElementById('ticketModal');
-    modal.style.display = 'block';
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    const modal = document.getElementById('ticketModal');
-    const closeModal = document.querySelector('.modal .close');
-
-    closeModal.onclick = () => {
-        modal.style.display = 'none';
-    };
-
-    window.onclick = (event) => {
-        if (event.target == modal) {
-            modal.style.display = 'none';
-        }
-    };
-
-    fetchUserTickets();
-});
-</script>
+<script src="scripts.js"></script>
 </body>
 </html>

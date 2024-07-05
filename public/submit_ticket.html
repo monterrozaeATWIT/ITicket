@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>iTicket</title>
+  <title>Submit Ticket - IT Ticketing System</title>
   
   <style>
     body {
@@ -16,7 +16,7 @@
     .container {
       max-width: 800px;
       margin: 20px auto;
-      background-color: #DEB887; /* Background color for the container */
+      background-color: #34bba5;
       padding: 20px;
       border-radius: 5px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -24,7 +24,7 @@
 
     h1 {
       text-align: center;
-      color: #000; /* Black color for heading */
+      color: #000;
     }
 
     .ticket-form {
@@ -38,7 +38,7 @@
 
     .form-group label {
       font-weight: bold;
-      color: #000; /* Dark gray color for labels */
+      color: #000;
     }
 
     .form-group select,
@@ -48,11 +48,10 @@
       padding: 8px;
       border: 1px solid #ccc;
       border-radius: 3px;
-      box-sizing: border-box; /* Ensure padding is included in width */
     }
 
     .form-group textarea {
-      resize: none; /* Disable resizing */
+      resize: vertical;
       min-height: 100px;
     }
 
@@ -74,21 +73,12 @@
 </head>
 <body>
 
-<!-- The main container for the form -->    
 <div class="container">
-<!-- Main heading for the form -->
-  <h1>iTicket</h1>
-  <form class="ticket-form" id="ticket-form">
-    <div class="form-group">
-      <!-- Label for the ticket number input field -->
-      <label for="ticket-number">Ticket Number:</label>
-      <!-- Input field for ticket number which is read-only -->
-      <input type="text" id="ticket-number" name="ticket-number" readonly>
-    </div>
-    <!-- Form group for departments -->
+  <h1>Submit Ticket</h1>
+  <form class="ticket-form" id="ticketForm">
+    <input type="hidden" id="userEmail" name="userEmail"> <!-- Hidden field for user email -->
     <div class="form-group">
       <label for="department">Select Department:</label>
-      <!-- dropdown menu for selecting a department -->
       <select id="department" name="department">
         <option value="Select a Department">Select a Department</option>
         <option value="IT">IT</option>
@@ -97,7 +87,6 @@
         <option value="Marketing">Marketing</option>
         <option value="Engineering">Engineering</option>
         <option value="Finance">Finance</option>
-        <!-- Add more departments -->
       </select>
     </div>
     <div class="form-group">
@@ -106,7 +95,6 @@
         <option value="Low">Low</option>
         <option value="Medium">Medium</option>
         <option value="High">High</option>
-       
       </select>
     </div>
     <div class="form-group">
@@ -124,14 +112,49 @@
 </div>
 
 <script>
+  // Fill the user email from localStorage when the form loads
   document.addEventListener('DOMContentLoaded', function() {
-    function generateTicketNumber() {
-      return Math.floor(Math.random() * 1000000);
+    const userEmail = localStorage.getItem('email');
+    if (userEmail) {
+      document.getElementById('userEmail').value = userEmail;
     }
+  });
 
-    document.getElementById('ticket-number').value = generateTicketNumber();
+  // Handle form submission
+  document.getElementById('ticketForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    const department = document.getElementById('department').value;
+    const priority = document.getElementById('priority').value;
+    const subject = document.getElementById('subject').value;
+    const description = document.getElementById('description').value;
+    const userEmail = document.getElementById('userEmail').value;
+
+    const token = localStorage.getItem('token');
+
+    try {
+      const response = await fetch('http://localhost:5000/tickets/submit-ticket', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ department, priority, subject, description, userEmail })
+      });
+
+      if (response.status === 201) {
+        alert('Ticket submitted successfully');
+        window.location.href = 'user_dashboard.html';
+      } else {
+        const errorText = await response.text();
+        alert('Error submitting ticket: ' + errorText);
+      }
+    } catch (error) {
+      alert('Error submitting ticket: ' + error.message);
+    }
   });
 </script>
 
+<script src="scripts.js"></script>
 </body>
 </html>

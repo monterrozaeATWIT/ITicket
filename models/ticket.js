@@ -1,18 +1,14 @@
 const mongoose = require('mongoose');
 const { v4: uuidv4 } = require('uuid')
-
-// Template for ticket
 const ticketSchema = new mongoose.Schema({
-  title: { type: String, required: true },
-  id: { type: String, default: uuidv4, unique: true, required: true}, // Create a new unique ID for the ticket
-  created: { type: Date, default: Date.now }, 
-  description: { type: String },
-  priority: { type: String },
-  department: { type: String, required: true },
-  status: { type: String, default: 'open' }
-  // Todo: add username field
+    department: { type: String, required: true },
+    priority: { type: String, required: true },
+    subject: { type: String, required: true },
+    description: { type: String, required: true },
+    createdAt: { type: Date, default: Date.now },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    userEmail: { type: String, required: true },
+    status: { type: String, enum: ['Open', 'Working on it', 'Closed'], default: 'Open' } // New status field
 });
 
-const Ticket = mongoose.model('Ticket', ticketSchema);
-
-module.exports = Ticket;
+module.exports = mongoose.model('Ticket', ticketSchema);

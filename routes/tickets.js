@@ -2,29 +2,28 @@ const express = require('express');
 const router = express.Router();
 const Ticket = require('../models/ticket');
 
-// Create a new ticket
-router.post('/', async (req, res) => {
-  try {
-    const ticket = new Ticket(req.body);
-    await ticket.save();
-    res.status(201).send(ticket);
-  } catch (err) {
-    res.status(400).send(err);
-  }
+// Get all tickets
+router.get('/tickets', async (req, res) => {
+    try {
+        const tickets = await Ticket.find().populate('user', 'name email');
+        res.status(200).json(tickets);
+    } catch (error) {
+        res.status(400).send('Error fetching tickets: ' + error.message);
+    }
 });
 
-// Edit an existing ticket with provided ticket ID
-router.put('/:id', async (req, res) => {
-  try {
-    const ticket = await Ticket.findByIdAndUpdate(req.params.id, req.body, {
-      new: true, 
-      runValidators: true
-    });
 
-    res.send(ticket);
-  } catch (err) {
-    res.status(404).send({ error: 'Ticket not found' });
-  }
+// Get a single ticket by ID
+router.get('/tickets/:id', async (req, res) => {
+    try {
+        const ticket = await Ticket.findById(req.params.id).populate('user', 'name email');
+        if (!ticket) {
+            return res.status(404).send('Ticket not found');
+        }
+        res.status(200).json(ticket);
+    } catch (error) {
+        res.status(400).send('Error fetching ticket');
+    }
 });
 
 module.exports = router;

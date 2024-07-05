@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket Details - IT Ticketing System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .ticket-details {
+            margin-top: 20px;
+        }
+        .ticket-details p {
+            margin: 10px 0;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            font-weight: bold;
+            color: #333;
+        }
+        .form-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+        .form-group button {
+            padding: 10px 20px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .form-group button:hover {
+            background-color: #646970;
+        }
+        .back-button {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: flex-end;
+        }
+        .back-button button {
+            padding: 10px 20px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .back-button button:hover {
+            background-color: #646970;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="back-button">
+            <button onclick="goBack()">Back to Dashboard</button>
+        </div>
+        <h1>Ticket Details</h1>
+        <div class="ticket-details" id="ticketDetails"></div>
+        <div class="form-group">
+            <label for="status">Status:</label>
+            <select id="status">
+                <option value="Open">Open</option>
+                <option value="Working on it">Working on it</option>
+                <option value="Closed">Closed</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <button onclick="updateStatus()">Update Status</button>
+        </div>
+    </div>
+
+    <script>
+        let ticketId = null;
+
+        document.addEventListener('DOMContentLoaded', async function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            ticketId = urlParams.get('id');
+
+            if (ticketId) {
+                const response = await fetch(`http://localhost:5000/tickets/${ticketId}`);
+                if (response.ok) {
+                    const ticket = await response.json();
+                    const ticketDetails = document.getElementById('ticketDetails');
+                    ticketDetails.innerHTML = `
+                        <h3>${ticket.subject}</h3>
+                        <p><strong>Department:</strong> ${ticket.department}</p>
+                        <p><strong>Priority:</strong> ${ticket.priority}</p>
+                        <p><strong>Description:</strong> ${ticket.description}</p>
+                        <p><strong>Submitted At:</strong> ${new Date(ticket.createdAt).toLocaleString()}</p>
+                        <p><strong>User:</strong> ${ticket.userEmail}</p>
+                    `;
+                    document.getElementById('status').value = ticket.status;
+                } else {
+                    document.getElementById('ticketDetails').innerHTML = '<p>Error loading ticket details.</p>';
+                }
+            } else {
+                document.getElementById('ticketDetails').innerHTML = '<p>Invalid ticket ID.</p>';
+            }
+        });
+
+        async function updateStatus() {
+            const status = document.getElementById('status').value;
+            const response = await fetch(`http://localhost:5000/tickets/${ticketId}/status`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ status })
+            });
+
+            if (response.ok) {
+                alert('Status updated successfully');
+                location.reload(); // Reload the page to reflect the updated status
+            } else {
+                alert('Failed to update status');
+            }
+        }
+
+        function goBack() {
+            window.location.href = 'dashboard.html';
+        }
+    </script>
+</body>
+</html>
