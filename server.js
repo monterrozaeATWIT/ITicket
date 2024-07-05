@@ -2,11 +2,12 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const app = express();
 const PORT = 5000;
+const secretKey = 's3cr3t$tr1ngF0rJWT!s3cur1ty'; // Your secret key for JWT
 
 // Middleware
 app.use(bodyParser.json());
@@ -16,101 +17,73 @@ app.use(cors());
 const mongoURI = 'mongodb://localhost:27017/ticketing_system';
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('MongoDB connected'))
-    .catch(err => console.log(err));
+    .catch(err => console.log('MongoDB connection error:', err));
 
-// User Schema
-const userSchema = new mongoose.Schema({
-    name: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-    role: { type: String, enum: ['User', 'IT'], default: 'User' }
-});
+// User Model
+const User = require('./models/user');
 
-const User = mongoose.model('User', userSchema);
+// Ticket Model
+const Ticket = require('./models/ticket');
 
-// Ticket Schema
-const ticketSchema = new mongoose.Schema({
-    department: { type: String, required: true },
-    priority: { type: String, required: true },
-    subject: { type: String, required: true },
-    description: { type: String, required: true },
-    createdAt: { type: Date, default: Date.now },
-    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
-});
-
-const Ticket = mongoose.model('Ticket', ticketSchema);
-
-// Authentication Middleware
-async function auth(req, res, next) {
-    const token = req.header('Authorization').replace('Bearer ', '');
-    if (!token) {
-        return res.status(401).send('Access denied. No token provided.');
-    }
-
-    try {
-        const decoded = jwt.verify(token, 'SECRET_KEY');
-        req.user = await User.findById(decoded.userId);
-        if (!req.user) {
-            throw new Error();
-        }
-        next();
-    } catch (ex) {
-        res.status(400).send('Invalid token.');
-    }
-}
-
-// User Routes
+// User Signup Route
 app.post('/users/signup', async (req, res) => {
     try {
         const { name, email, password, role } = req.body;
         const hashedPassword = await bcrypt.hash(password, 10);
         const newUser = new User({ name, email, password: hashedPassword, role });
         await newUser.save();
-        res.status(201).send('User created');
+        res.status(201).send('User created successfully');
     } catch (error) {
-        res.status(400).send('Error creating user');
+        res.status(400).send('Error creating user: ' + error.message);
     }
 });
 
+// User Login Route
 app.post('/users/login', async (req, res) => {
     try {
         const { email, password } = req.body;
         const user = await User.findOne({ email });
-        if (!user || !await bcrypt.compare(password, user.password)) {
+        if (!user) {
             return res.status(400).send('Invalid credentials');
         }
-        const token = jwt.sign({ userId: user._id, role: user.role }, 'SECRET_KEY');
-        res.json({ token, role: user.role });
-    } catch (error) {
-        res.status(400).send('Error logging in');
-    }
-});
-
-// Ticket Routes
-app.post('/tickets/submit-ticket', auth, async (req, res) => {
-    try {
-        const { department, priority, subject, description } = req.body;
-        const newTicket = new Ticket({ department, priority, subject, description, user: req.user._id });
-        await newTicket.save();
-        res.status(201).send('Ticket submitted');
-    } catch (error) {
-        res.status(400).send('Error submitting ticket');
-    }
-});
-
-app.get('/tickets', auth, async (req, res) => {
-    try {
-        if (req.user.role !== 'IT') {
-            return res.status(403).send('Access denied');
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (!isPasswordValid) {
+            return res.status(400).send('Invalid credentials');
         }
+        const token = jwt.sign({ userId: user._id, role: user.role, email: user.email }, secretKey);
+        res.status(200).json({ userId: user._id, role: user.role, email: user.email, token });
+    } catch (error) {
+        res.status(400).send('Error logging in: ' + error.message);
+    }
+});
+
+// Define the PUT route for updating the ticket status
+app.put('/tickets/:id/status', async (req, res) => {
+    try {
+        const ticketId = req.params.id;
+        const { status } = req.body;
+        const updatedTicket = await Ticket.findByIdAndUpdate(ticketId, { status }, { new: true });
+        if (!updatedTicket) {
+            return res.status(404).send('Ticket not found');
+        }
+        res.status(200).json(updatedTicket);
+    } catch (error) {
+        res.status(400).send('Error updating ticket status: ' + error.message);
+    }
+});
+
+// Route to get all tickets
+app.get('/tickets', async (req, res) => {
+    try {
         const tickets = await Ticket.find().populate('user', 'name email');
         res.status(200).json(tickets);
     } catch (error) {
-        res.status(400).send('Error fetching tickets');
+        res.status(400).send('Error fetching tickets: ' + error.message);
     }
 });
 
-app.get('/tickets/:id', auth, async (req, res) => {
+// Route to get a single ticket by ID
+app.get('/tickets/:id', async (req, res) => {
     try {
         const ticket = await Ticket.findById(req.params.id).populate('user', 'name email');
         if (!ticket) {
@@ -118,20 +91,50 @@ app.get('/tickets/:id', auth, async (req, res) => {
         }
         res.status(200).json(ticket);
     } catch (error) {
-        res.status(400).send('Error fetching ticket');
+        res.status(400).send('Error fetching ticket: ' + error.message);
     }
 });
 
-// Get all tickets for a specific user
-app.get('/user/tickets', auth, async (req, res) => {
+// Route to create a new ticket
+app.post('/tickets/submit-ticket', async (req, res) => {
     try {
-        const tickets = await Ticket.find({ user: req.user._id }).populate('user', 'name email');
+        const { department, priority, subject, description, userEmail } = req.body;
+        const user = await User.findOne({ email: userEmail });
+        if (!user) {
+            return res.status(400).send('User not found');
+        }
+        const newTicket = new Ticket({
+            department,
+            priority,
+            subject,
+            description,
+            user: user._id,
+            userEmail,
+            status: 'Open' // Default status
+        });
+        await newTicket.save();
+        res.status(201).send('Ticket submitted');
+    } catch (error) {
+        res.status(400).send('Error submitting ticket: ' + error.message);
+    }
+});
+
+// Route to get user-specific tickets
+app.get('/user/tickets', async (req, res) => {
+    try {
+        const { userEmail } = req.query;
+        const user = await User.findOne({ email: userEmail });
+        if (!user) {
+            return res.status(400).send('User not found');
+        }
+        const tickets = await Ticket.find({ user: user._id }).populate('user', 'name email');
         res.status(200).json(tickets);
     } catch (error) {
-        res.status(400).send('Error fetching tickets');
+        res.status(400).send('Error fetching tickets: ' + error.message);
     }
 });
 
+// Start the server
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });
