@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path'); 
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -25,12 +26,17 @@ const User = require('./models/user');
 // Ticket Model
 const Ticket = require('./models/ticket');
 
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  });
+
 // User Signup Route
 app.post('/users/signup', async (req, res) => {
     try {
-        const { name, email, password, role } = req.body;
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser = new User({ name, email, password: hashedPassword, role });
+        const { username, name, email, password, role } = req.body;
+        const newUser = new User({ username, name, email, password: password, role });
         await newUser.save();
         res.status(201).send('User created successfully');
     } catch (error) {
@@ -44,11 +50,13 @@ app.post('/users/login', async (req, res) => {
         const { email, password } = req.body;
         const user = await User.findOne({ email });
         if (!user) {
-            return res.status(400).send('Invalid credentials');
+            return res.status(400).send('Invalid email');
         }
-        const isPasswordValid = await bcrypt.compare(password, user.password);
+        
+        const isPasswordValid = await user.comparePassword(password);
         if (!isPasswordValid) {
-            return res.status(400).send('Invalid credentials');
+            return res.status(400).send('Invalid password');
+            
         }
         const token = jwt.sign({ userId: user._id, role: user.role, email: user.email }, secretKey);
         res.status(200).json({ userId: user._id, role: user.role, email: user.email, token });
