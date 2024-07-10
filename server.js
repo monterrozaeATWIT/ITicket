@@ -16,7 +16,7 @@ app.use(cors());
 
 // MongoDB Connection
 const mongoURI = 'mongodb://localhost:27017/ticketing_system';
-mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(mongoURI)
     .then(() => console.log('MongoDB connected'))
     .catch(err => console.log('MongoDB connection error:', err));
 
