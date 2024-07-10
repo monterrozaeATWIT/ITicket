@@ -91,35 +91,45 @@
     </div>
 
     <script>
-        document.getElementById('signupForm').addEventListener('submit', async function(event) {
-            event.preventDefault();
-            const username = document.getElementById('username').value;
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const role = document.getElementById('role').value;
-            const messageElement = document.getElementById('message');
-
-            try {
-                const response = await fetch('http://localhost:5000/users/signup', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ username, name, email, password, role })
-                });
-
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    messageElement.textContent = errorText;
-                    return;
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('signupForm').addEventListener('submit', async function(event) {
+                event.preventDefault();
+                const username = document.getElementById('username').value;
+                const name = document.getElementById('name').value;
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                const role = document.getElementById('role').value;
+                const messageElement = document.getElementById('message');
+    
+                try {
+                    const response = await fetch('http://localhost:5000/users/signup', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ username, name, email, password, role })
+                    });
+    
+                    if (!response.ok) {
+                        const errorText = await response.text();
+                        messageElement.textContent = errorText;
+                        messageElement.style.color = 'red';
+                        return;
+                    }
+    
+                    messageElement.textContent = 'User created successfully';
+                    messageElement.style.color = 'green';
+                    
+                    // Redirect to login.html after successful sign-up
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 1000); // Adjust the timeout duration as needed
+    
+                } catch (error) {
+                    messageElement.textContent = 'An error occurred. Please try again.';
+                    messageElement.style.color = 'red';
                 }
-
-                messageElement.textContent = 'User created successfully';
-                messageElement.style.color = 'green';
-            } catch (error) {
-                messageElement.textContent = 'An error occurred. Please try again.';
-            }
+            });
         });
     </script>
 </body>
