@@ -64,6 +64,7 @@
     <table>
         <thead>
             <tr>
+                <th>Name</th>
                 <th>Subject</th>
                 <th>Department</th>
                 <th>Priority</th>
@@ -92,6 +93,7 @@ async function fetchTickets() {
         const row = document.createElement('tr');
         const user = ticket.user ? `${ticket.user.name} (${ticket.user.email})` : 'Unknown';
         row.innerHTML = `
+            <td>${ticket.user.name}</td>
             <td>${ticket.subject}</td>
             <td>${ticket.department}</td>
             <td>${ticket.priority}</td>
