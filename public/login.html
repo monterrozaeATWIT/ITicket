@@ -1,120 +1,220 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - IT Ticketing System</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f2f2f2;
-        }
-        .container {
-            max-width: 400px;
-            margin: 50px auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            text-align: center;
-            color: #333;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        .form-group label {
-            font-weight: bold;
-            color: #333;
-        }
-        .form-group input {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 3px;
-        }
-        .form-group button {
-            width: 100%;
-            padding: 10px;
-            background-color: #333;
-            color: #fff;
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .form-group button:hover {
-            background-color: #646970;
-        }
-        #message {
-            color: red;
-            text-align: center;
-            margin-top: 10px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - IT Ticketing System</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: #fff;
+      overflow: hidden;
+    }
+
+    .container {
+      max-width: 400px;
+      width: 100%;
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s, box-shadow 0.3s;
+      color: #333;
+      animation: slideIn 0.6s ease-out, glow 2s infinite alternate;
+    }
+
+    .container:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateY(100vh);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes glow {
+      from {
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+      }
+
+      to {
+        box-shadow: 0 0 40px rgba(0, 0, 0, 0.4);
+      }
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      font-size: 2.5em;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      background: -webkit-linear-gradient(#f39c12, #e74c3c);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: fadeIn 1s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      font-weight: bold;
+      color: #333;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+
+    .form-group button {
+      width: 100%;
+      padding: 10px;
+      background: linear-gradient(to right, #f39c12, #e74c3c);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+      animation: bounce 0.6s ease-out;
+    }
+
+    @keyframes bounce {
+      0% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
+
+      100% {
+        transform: translateY(0);
+      }
+    }
+
+    .form-group button:hover {
+      background: linear-gradient(to right, #e74c3c, #f39c12);
+      animation: shake 0.6s;
+    }
+
+    @keyframes shake {
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+
+      20%,
+      60% {
+        transform: translateX(-10px);
+      }
+
+      40%,
+      80% {
+        transform: translateX(10px);
+      }
+    }
+
+    #message {
+      color: red;
+      text-align: center;
+      margin-top: 10px;
+    }
+  </style>
 </head>
+
 <body>
-    <div class="container">
-        <h1>Login</h1>
-        <form id="loginForm">
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <div class="form-group">
-                <button type="submit">Login</button>
-            </div>
-            <div id="message"></div>
-        </form>
-    </div>
+  <div class="container">
+    <h1>Login</h1>
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+      </div>
+      <div class="form-group">
+        <button type="submit">Login</button>
+      </div>
+      <div id="message"></div>
+    </form>
+  </div>
 
-    <script>
-        document.getElementById('loginForm').addEventListener('submit', async function(event) {
-            event.preventDefault();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const messageElement = document.getElementById('message');
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', async function(event) {
+      event.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const messageElement = document.getElementById('message');
 
-            try {
-                const response = await fetch('http://localhost:5000/users/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ email, password })
-                });
-
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    messageElement.textContent = errorText;
-                    return;
-                }
-
-                const data = await response.json();
-
-                if (data.userId && data.role && data.email) {
-                    localStorage.setItem('userId', data.userId);
-                    localStorage.setItem('role', data.role);
-                    localStorage.setItem('email', data.email);
-                    if (data.role === 'IT') {
-                        window.location.href = 'dashboard.html';
-                    } else {
-                        window.location.href = 'user_dashboard.html';
-                    }
-                } else {
-                    messageElement.textContent = 'Invalid credentials. Please try again.';
-                }
-            } catch (error) {
-                messageElement.textContent = 'An error occurred. Please try again.';
-            }
+      try {
+        const response = await fetch('http://localhost:5000/users/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email, password })
         });
-    </script>
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          messageElement.textContent = errorText;
+          return;
+        }
+
+        const data = await response.json();
+
+        if (data.userId && data.role && data.email) {
+          localStorage.setItem('userId', data.userId);
+          localStorage.setItem('role', data.role);
+          localStorage.setItem('email', data.email);
+          if (data.role === 'IT') {
+            window.location.href = 'dashboard.html';
+          } else {
+            window.location.href = 'user_dashboard.html';
+          }
+        } else {
+          messageElement.textContent = 'Invalid credentials. Please try again.';
+        }
+      } catch (error) {
+        messageElement.textContent = 'An error occurred. Please try again.';
+      }
+    });
+  </script>
 </body>
+
 </html>
