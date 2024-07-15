@@ -1,123 +1,312 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IT Dashboard - Ticketing System</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f2f2f2;
-        }
-        .container {
-            max-width: 1000px;
-            margin: 20px auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            text-align: center;
-            color: #333;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-        th, td {
-            padding: 10px;
-            border: 1px solid #ccc;
-            text-align: left;
-        }
-        th {
-            background-color: #f4f4f4;
-        }
-        .logout-button {
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: flex-end;
-        }
-        .logout-button button {
-            padding: 10px 20px;
-            background-color: #333;
-            color: #fff;
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .logout-button button:hover {
-            background-color: #646970;
-        }
-    </style>
-</head>
-<body>
-<div class="container">
-    <div class="logout-button">
-        <button onclick="logout()">Logout</button>
-    </div>
-    <h1>IT Dashboard</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Subject</th>
-                <th>Department</th>
-                <th>Priority</th>
-                <th>Description</th>
-                <th>Submitted At</th>
-                <th>Status</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody id="ticketTableBody"></tbody>
-    </table>
-</div>
 
-<script>
-async function fetchTickets() {
-    const response = await fetch('http://localhost:5000/tickets');
-    if (!response.ok) {
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Dashboard - IT Ticketing System</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: #fff;
+      overflow: hidden;
+    }
+
+    .container {
+      max-width: 1000px;
+      width: 100%;
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s, box-shadow 0.3s;
+      color: #333;
+      animation: slideIn 0.6s ease-out, glow 2s infinite alternate;
+    }
+
+    .container:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateY(100vh);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes glow {
+      from {
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+      }
+      to {
+        box-shadow: 0 0 40px rgba(0, 0, 0, 0.4);
+      }
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      font-size: 2.5em;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      background: -webkit-linear-gradient(#f39c12, #e74c3c);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: fadeIn 1s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    th,
+    td {
+      padding: 10px;
+      border: 1px solid #ccc;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f4f4f4;
+    }
+
+    .button-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background: linear-gradient(to right, #f39c12, #e74c3c);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+      animation: bounce 0.6s ease-out;
+    }
+
+    @keyframes bounce {
+      0% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+      100% {
+        transform: translateY(0);
+      }
+    }
+
+    button:hover {
+      background: linear-gradient(to right, #e74c3c, #f39c12);
+      animation: shake 0.6s;
+    }
+
+    @keyframes shake {
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+      20%,
+      60% {
+        transform: translateX(-10px);
+      }
+      40%,
+      80% {
+        transform: translateX(10px);
+      }
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 600px;
+      border-radius: 10px;
+      animation: zoomIn 0.6s ease-out;
+    }
+
+    @keyframes zoomIn {
+      from {
+        transform: scale(0.5);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    #ticketDetails h3 {
+      color: #333;
+    }
+
+    #ticketDetails p {
+      color: #333;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>User Dashboard</h1>
+    <div class="button-container">
+      <button onclick="location.href='submit_ticket.html'">Create Ticket</button>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Subject</th>
+          <th>Department</th>
+          <th>Priority</th>
+          <th>Description</th>
+          <th>Submitted At</th>
+          <th>Created By</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="ticketTableBody"></tbody>
+    </table>
+  </div>
+
+  <!-- Modal for viewing ticket details -->
+  <div id="ticketModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <div id="ticketDetails"></div>
+    </div>
+  </div>
+
+  <script>
+    async function fetchUserTickets() {
+      const token = localStorage.getItem('token');
+      const response = await fetch('http://localhost:5000/user/tickets', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      if (!response.ok) {
         console.error('Network response was not ok');
         return;
-    }
-    const tickets = await response.json();
-    const ticketTableBody = document.getElementById('ticketTableBody');
-    ticketTableBody.innerHTML = '';
+      }
+      const tickets = await response.json();
+      const ticketTableBody = document.getElementById('ticketTableBody');
+      ticketTableBody.innerHTML = '';
 
-    tickets.forEach(ticket => {
+      tickets.forEach(ticket => {
         const row = document.createElement('tr');
-        const user = ticket.user ? `${ticket.user.name} (${ticket.user.email})` : 'Unknown';
         row.innerHTML = `
-            <td>${ticket.user.name}</td>
-            <td>${ticket.subject}</td>
-            <td>${ticket.department}</td>
-            <td>${ticket.priority}</td>
-            <td>${ticket.description}</td>
-            <td>${new Date(ticket.createdAt).toLocaleString()}</td>
-            <td>${ticket.status}</td>
-            <td><button onclick="viewTicket('${ticket._id}')">View Details</button></td>
+          <td>${ticket.subject}</td>
+          <td>${ticket.department}</td>
+          <td>${ticket.priority}</td>
+          <td>${ticket.description}</td>
+          <td>${new Date(ticket.createdAt).toLocaleString()}</td>
+          <td><button onclick="viewTicket('${ticket._id}')">View Details</button></td>
         `;
         ticketTableBody.appendChild(row);
+      });
+    }
+
+    async function viewTicket(id) {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`http://localhost:5000/tickets/${id}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      if (!response.ok) {
+        console.error('Network response was not ok');
+        return;
+      }
+
+      const ticket = await response.json();
+      const ticketDetails = document.getElementById('ticketDetails');
+      ticketDetails.innerHTML = `
+        <h3>${ticket.subject}</h3>
+        <p><strong>Department:</strong> ${ticket.department}</p>
+        <p><strong>Priority:</strong> ${ticket.priority}</p>
+        <p><strong>Description:</strong> ${ticket.description}</p>
+        <p><strong>Submitted At:</strong> ${new Date(ticket.createdAt).toLocaleString()}</p>
+      `;
+
+      const modal = document.getElementById('ticketModal');
+      modal.style.display = 'block';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const modal = document.getElementById('ticketModal');
+      const closeModal = document.querySelector('.modal .close');
+
+      closeModal.onclick = () => {
+        modal.style.display = 'none';
+      };
+
+      window.onclick = (event) => {
+        if (event.target == modal) {
+          modal.style.display = 'none';
+        }
+      };
+
+      fetchUserTickets();
     });
-}
-
-function viewTicket(id) {
-    window.location.href = `ticket_details.html?id=${id}`;
-}
-
-function logout() {
-    localStorage.clear();
-    window.location.href = 'login.html';
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    fetchTickets();
-});
-</script>
+  </script>
 </body>
+
 </html>
