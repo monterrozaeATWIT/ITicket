@@ -1,30 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Submit Ticket - IT Ticketing System</title>
-  
+  <title>iTicket</title>
+
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Roboto', sans-serif;
       margin: 0;
       padding: 0;
-      background-color: #f2f2f2;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: #fff;
+      overflow: hidden;
     }
 
     .container {
       max-width: 800px;
-      margin: 20px auto;
-      background-color: #34bba5;
-      padding: 20px;
-      border-radius: 5px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s, box-shadow 0.3s;
+      color: #333;
+      animation: slideIn 0.6s ease-out, glow 2s infinite alternate;
+    }
+
+    .container:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateY(100vh);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes glow {
+      from {
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+      }
+      to {
+        box-shadow: 0 0 40px rgba(0, 0, 0, 0.4);
+      }
     }
 
     h1 {
       text-align: center;
-      color: #000;
+      color: #333;
+      font-size: 2.5em;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      background: -webkit-linear-gradient(#f39c12, #e74c3c);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: fadeIn 1s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
     }
 
     .ticket-form {
@@ -33,128 +87,150 @@
     }
 
     .form-group {
-      margin-bottom: 15px;
+      margin-bottom: 20px;
+      animation: zoomIn 0.6s ease-out;
+    }
+
+    @keyframes zoomIn {
+      from {
+        transform: scale(0.5);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
     }
 
     .form-group label {
       font-weight: bold;
-      color: #000;
+      color: #333;
+      margin-bottom: 8px;
+      display: block;
     }
 
     .form-group select,
     .form-group input[type="text"],
     .form-group textarea {
       width: 100%;
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 3px;
+      padding: 15px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      box-sizing: border-box;
+      font-size: 1em;
+      transition: border-color 0.3s;
+      animation: slideIn 0.6s ease-out;
+    }
+
+    .form-group select:focus,
+    .form-group input[type="text"]:focus,
+    .form-group textarea:focus {
+      border-color: #007BFF;
+      outline: none;
     }
 
     .form-group textarea {
-      resize: vertical;
-      min-height: 100px;
+      resize: none;
+      min-height: 120px;
     }
 
     .form-group input[type="submit"] {
-      width: auto;
-      padding: 10px 20px;
-      background-color: #000;
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(to right, #f39c12, #e74c3c);
       color: #fff;
       border: none;
-      border-radius: 3px;
+      border-radius: 8px;
       cursor: pointer;
-      transition: background-color 0.3s;
+      font-size: 1.2em;
+      transition: background 0.3s;
+      animation: bounce 0.6s ease-out;
+    }
+
+    @keyframes bounce {
+      0% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+      100% {
+        transform: translateY(0);
+      }
     }
 
     .form-group input[type="submit"]:hover {
-      background-color: #646970;
+      background: linear-gradient(to right, #e74c3c, #f39c12);
+      animation: shake 0.6s;
+    }
+
+    @keyframes shake {
+      0%, 100% {
+        transform: translateX(0);
+      }
+      20%, 60% {
+        transform: translateX(-10px);
+      }
+      40%, 80% {
+        transform: translateX(10px);
+      }
     }
   </style>
 </head>
+
 <body>
 
-<div class="container">
-  <h1>Submit Ticket</h1>
-  <form class="ticket-form" id="ticketForm">
-    <input type="hidden" id="userEmail" name="userEmail"> <!-- Hidden field for user email -->
-    <div class="form-group">
-      <label for="department">Select Department:</label>
-      <select id="department" name="department">
-        <option value="Select a Department">Select a Department</option>
-        <option value="IT">IT</option>
-        <option value="HR">HR</option>
-        <option value="Sales">Sales</option>
-        <option value="Marketing">Marketing</option>
-        <option value="Engineering">Engineering</option>
-        <option value="Finance">Finance</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label for="priority">Priority:</label>
-      <select id="priority" name="priority">
-        <option value="Low">Low</option>
-        <option value="Medium">Medium</option>
-        <option value="High">High</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label for="subject">Subject:</label>
-      <input type="text" id="subject" name="subject" required>
-    </div>
-    <div class="form-group">
-      <label for="description">Description:</label>
-      <textarea id="description" name="description" required></textarea>
-    </div>
-    <div class="form-group">
-      <input type="submit" value="Submit Ticket">
-    </div>
-  </form>
-</div>
+  <div class="container">
+    <h1>iTicket</h1>
+    <form class="ticket-form" id="ticket-form">
+      <div class="form-group">
+        <label for="ticket-number">Ticket Number:</label>
+        <input type="text" id="ticket-number" name="ticket-number" readonly>
+      </div>
+      <div class="form-group">
+        <label for="department">Select Department:</label>
+        <select id="department" name="department">
+          <option value="Select a Department">Select a Department</option>
+          <option value="IT">IT</option>
+          <option value="HR">HR</option>
+          <option value="Sales">Sales</option>
+          <option value="Marketing">Marketing</option>
+          <option value="Engineering">Engineering</option>
+          <option value="Finance">Finance</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="priority">Priority:</label>
+        <select id="priority" name="priority">
+          <option value="Low">Low</option>
+          <option value="Medium">Medium</option>
+          <option value="High">High</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="subject">Subject:</label>
+        <input type="text" id="subject" name="subject" required>
+      </div>
+      <div class="form-group">
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" required></textarea>
+      </div>
+      <div class="form-group">
+        <input type="submit" value="Submit Ticket">
+      </div>
+    </form>
+  </div>
 
-<script>
-  // Fill the user email from localStorage when the form loads
-  document.addEventListener('DOMContentLoaded', function() {
-    const userEmail = localStorage.getItem('email');
-    if (userEmail) {
-      document.getElementById('userEmail').value = userEmail;
-    }
-  });
-
-  // Handle form submission
-  document.getElementById('ticketForm').addEventListener('submit', async function(event) {
-    event.preventDefault();
-
-    const department = document.getElementById('department').value;
-    const priority = document.getElementById('priority').value;
-    const subject = document.getElementById('subject').value;
-    const description = document.getElementById('description').value;
-    const userEmail = document.getElementById('userEmail').value;
-
-    const token = localStorage.getItem('token');
-
-    try {
-      const response = await fetch('http://localhost:5000/tickets/submit-ticket', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ department, priority, subject, description, userEmail })
-      });
-
-      if (response.status === 201) {
-        alert('Ticket submitted successfully');
-        window.location.href = 'user_dashboard.html';
-      } else {
-        const errorText = await response.text();
-        alert('Error submitting ticket: ' + errorText);
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      function generateTicketNumber() {
+        return Math.floor(Math.random() * 1000000);
       }
-    } catch (error) {
-      alert('Error submitting ticket: ' + error.message);
-    }
-  });
-</script>
 
-<script src="scripts.js"></script>
+      document.getElementById('ticket-number').value = generateTicketNumber();
+    });
+  </script>
+
 </body>
+
 </html>
