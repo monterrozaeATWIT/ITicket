@@ -2,9 +2,11 @@ const express = require('express');
 const path = require('path'); 
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const favicon = require('serve-favicon')
 const cors = require('cors');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const articlesRouter = require('./routes/articles');
 
 const app = express();
 const PORT = 5000;
@@ -12,10 +14,15 @@ const secretKey = 's3cr3t$tr1ngF0rJWT!s3cur1ty'; // Your secret key for JWT
 
 // Middleware
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true}))
 app.use(cors());
+
+// Icon 
+app.use(favicon(__dirname + '/favicon.ico'));
 
 // MongoDB Connection
 const mongoURI = 'mongodb://localhost:27017/ticketing_system';
+
 mongoose.connect(mongoURI)
     .then(() => console.log('MongoDB connected'))
     .catch(err => console.log('MongoDB connection error:', err));
@@ -26,6 +33,17 @@ const User = require('./models/user');
 // Ticket Model
 const Ticket = require('./models/ticket');
 
+// Articles Model
+const Article = require('./models/article');
+
+// Set EJS as the template engine
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
+// Articles Route
+app.use('/articles', articlesRouter);
+
+// Serve index.html
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res) => {
