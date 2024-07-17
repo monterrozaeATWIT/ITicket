@@ -1,20 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>New Article</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knowledge Base</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        button {
+            padding: 10px 20px;
+            margin-bottom: 20px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-  <h1>Create New Article</h1>
-  <form action="/articles" method="POST">
-    <label for="title">Title:</label>
-    <input type="text" id="title" name="title" required>
-    <br>
-    <label for="content">Content:</label>
-    <textarea id="content" name="content" required></textarea>
-    <br>
-    <button type="submit">Create</button>
-  </form>
+    <header>
+        <h1>Knowledge Base</h1>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/articles/new">Create Article</a>
+        </nav>
+    </header>
+    <main>
+        <h2>All Articles</h2>
+        <form action="/articles/search" method="GET">
+            <input type="text" name="query" placeholder="Search articles..." required>
+            <button type="submit">Search</button>
+        </form>
+        <ul>
+            <% articles.forEach(article => { %>
+                <li>
+                    <h3><%= article.title %></h3>
+                    <p><%= article.content %></p>
+                    <small>Created at: <%= article.createdAt.toDateString() %></small>
+                </li>
+            <% }) %>
+        </ul>
+    </main>
 </body>
 </html>
