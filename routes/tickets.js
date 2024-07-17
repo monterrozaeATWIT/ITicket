@@ -26,4 +26,14 @@ router.get('/tickets/:id', async (req, res) => {
     }
 });
 
+router.get('/user/tickets', authenticateToken, async (req, res) => {
+    try {
+        const tickets = await Ticket.find({ user: req.user.id }).sort({ createdAt: -1 });
+        res.json(tickets);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server Error' });
+    }
+});
+
 module.exports = router;
