@@ -176,3 +176,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 });
+
+function viewTicket(id) {
+    window.location.href = `ticket_details.html?id=${id}`;
+}
