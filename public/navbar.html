@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Building a Horizontal Navigation Bar</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+        }
+
+        .navbar {
+            display: flex;
+            position: sticky;
+            align-items: center;
+            justify-content: space-between;
+            top: 0px;
+            background: rgba(0, 0, 0, 0.6) url('https://media.geeksforgeeks.org/wp-content/uploads/20201215124609/Capture-300x14.PNG');
+            background-blend-mode: darken;
+            background-size: cover;
+            color: white;
+            padding: 10px 20px;
+        }
+
+        .nav-list {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-list li {
+            margin-right: 20px;
+        }
+
+        .nav-list li:last-child {
+            margin-right: 0;
+        }
+
+        .nav-list li a {
+            text-decoration: none;
+            color: white;
+            font-size: 18px;
+            transition: color 0.3s ease-in-out;
+        }
+
+        .nav-list li a:hover {
+            color: #ffd700;
+            /* Change the color on hover */
+        }
+
+        .rightNav {
+            text-align: right;
+        }
+
+        #search {
+            padding: 8px;
+            font-size: 16px;
+            border: 2px solid #fff;
+            border-radius: 5px;
+        }
+
+        .btn {
+            background-color: #ffd700;
+            color: #000;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .btn:hover {
+            background-color: #000;
+            /* Change the background color on hover */
+            color: #ffd700;
+        }
+
+        .username {
+            margin-right: 20px;
+            font-size: 18px;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+<nav class="navbar">
+    <ul class="nav-list">
+        <li><span id="username" class="username"></span></li>
+        <li><a href="login.html">Logout</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="#services">Services</a></li>
+    </ul>
+    <div id="search-container">
+        <input type="text" id="search-bar" placeholder="Search tickets...">
+        <button id="search-button">Search</button>
+        <div id="tickets-container">
+          <ul id="tickets-list"></ul>
+        </div>
+      </div>
+
+      <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          document.getElementById('search-button').addEventListener('click', async function () {
+            const query = document.getElementById('search-bar').value;
+            if (query.trim() === '') {
+              document.getElementById('tickets-container').style.display = 'none';
+              return;
+            }
+    
+            try {
+            email = "randomize@test.com"
+              const response_alltickets = await fetch(`http://localhost:8081/user/tickets?userEmail=${email}`);
+              console.log("test")
+              const response = await fetch(`http://localhost:8081/tickets/search?query=${encodeURIComponent(query)}`);
+              if (!response.ok) {
+                throw new Error('Network response was not ok');
+              }
+    
+              const tickets = await response_alltickets.json();
+              const ticketsList = document.getElementById('tickets-list');
+              ticketsList.innerHTML = '';
+    
+              if (tickets.length > 0) {
+                tickets.forEach(ticket => {
+                  const li = document.createElement('li');
+                  li.innerHTML = `<a href="ticket_details.html?id=${ticket._id}">${ticket.subject}</a>`;
+                  ticketsList.appendChild(li);
+                });
+                document.getElementById('tickets-container').style.display = 'block';
+              } else {
+                ticketsList.innerHTML = '<li>No tickets found.</li>';
+                document.getElementById('tickets-container').style.display = 'block';
+              }
+            } catch (error) {
+              console.error('Error fetching tickets:', error);
+              document.getElementById('tickets-container').style.display = 'none';
+            }
+          });
+    
+          document.addEventListener('click', function (event) {
+            const searchContainer = document.getElementById('search-container');
+            const ticketsContainer = document.getElementById('tickets-container');
+            if (!searchContainer.contains(event.target)) {
+              ticketsContainer.style.display = 'none';
+            }
+          });
+        });
+      </script>
+
+</nav>
+<!-- <script src="../username.js"></script> -->
+</body>
+
+</html>
