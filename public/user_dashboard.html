@@ -14,11 +14,16 @@
       padding: 0;
       background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
       height: 100vh;
       color: #fff;
       overflow: auto;
+    }
+
+    #navbar-container {
+      width: 100%;
+      
     }
 
     .container {
@@ -30,7 +35,7 @@
       box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
       transition: transform 0.3s, box-shadow 0.3s;
       color: #333;
-      margin: auto;
+      margin-top: 20px;
       /* animation: slideIn 0.6s ease-out, glow 2s infinite alternate; */
     }
 
@@ -210,6 +215,27 @@
 </head>
 
 <body>
+  <div id="navbar-container"></div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      fetch('navbar.html')
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('navbar-container').innerHTML = data;
+          // Manually run the username script after loading the navbar
+          const username = localStorage.getItem('email');
+          console.log('Username from localStorage:', username); // Debugging log
+          const usernameElement = document.getElementById('username');
+          if (usernameElement) {
+            usernameElement.textContent = `Welcome, ${username}`;
+          } else {
+            console.error('Username element not found');
+          }
+        })
+        .catch(error => console.error('Error loading navbar:', error));
+    });
+  </script>
+
   <div class="container">
     <h1>Your Dashboard</h1>
     <div class="button-container">
@@ -239,10 +265,7 @@
     </div>
   </div>
 
-<script src="scripts.js">
-
-</script>
-
+  <script src="scripts.js"></script>
 
 </body>
 
