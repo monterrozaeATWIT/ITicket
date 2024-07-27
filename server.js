@@ -61,6 +61,23 @@ app.get('/', (req, res) => {
     }
   });
 
+  app.post('/tickets/:id/comments', async (req, res) => {
+    try {
+        const ticketId = req.params.id;
+        const response = await Ticket.findById(ticketId);
+        
+        if (!response) {
+            return res.status(404).send('Ticket not found');
+        }
+
+        response.comments.push(req.body.comment);
+        await response.save();
+        res.status(200).json(req.body.comment);
+    } catch (error) {
+        res.status(500).send('Server error');
+    }
+});  
+
 app.get('/tickets/statistics', async (req, res) => {
     try {
         const tickets = await Ticket.find();
@@ -139,22 +156,7 @@ app.put('/tickets/:id/status', async (req, res) => {
         res.status(400).send('Error updating ticket status: ' + error.message);
     }
 });
-app.post('/tickets/:id/comments', async (req, res) => {
-    try {
-        const ticketId = req.params.id;
-        const response = await Ticket.findById(ticketId);
-        
-        if (!response) {
-            return res.status(404).send('Ticket not found');
-        }
 
-        response.comments.push(req.body.comment);
-        await response.save();
-        res.status(200).json(req.body.comment);
-    } catch (error) {
-        res.status(500).send('Server error');
-    }
-});
 // Route to get all tickets
 app.get('/tickets', async (req, res) => {
     try {
