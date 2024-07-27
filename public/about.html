@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us - IT Ticketing System</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100vh;
+      color: #fff;
+      overflow: auto;
+    }
+
+    #navbar-container {
+      width: 100%;
+   
+    }
+
+    .container {
+      max-width: 1000px;
+      width: 100%;
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s, box-shadow 0.3s;
+      color: #333;
+      margin-top: 20px;
+    }
+
+    .container:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      font-size: 2.5em;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      background: -webkit-linear-gradient(#f39c12, #e74c3c);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: fadeIn 1s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    .content {
+      text-align: center;
+    }
+
+    .content h2 {
+      color: #333;
+      font-size: 2em;
+      margin-bottom: 10px;
+    }
+
+    .content p {
+      color: #333;
+      font-size: 1.2em;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .content img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+  </style>
+</head>
+
+<body>
+  <div id="navbar-container"></div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      fetch('navbar.html')
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('navbar-container').innerHTML = data;
+          const username = localStorage.getItem('email');
+          const usernameElement = document.getElementById('username');
+          if (usernameElement) {
+            usernameElement.textContent = `Welcome, ${username}`;
+          }
+        })
+        .catch(error => console.error('Error loading navbar:', error));
+    });
+  </script>
+
+  <div class="container">
+    <h1>About Us</h1>
+    <div class="content">
+      <h2>Our Goal</h2>
+      <p>Our goal is to create a lightweight, IT ticketing service for small to medium sizd companies to use. </p>
+      
+      <h2>Contact Us</h2>
+      <p>If you have any questions or need support, please don't hesitate to reach out to us.</p>
+    </div>
+  </div>
+</body>
+
+</html>

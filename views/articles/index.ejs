@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knowledge Base</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+            color: #fff;
+        }
+
+        header {
+            background: #ffffff;
+            padding: 15px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            color: #333;
+            }
+
+        nav a {
+            color: #333;
+            text-decoration: none;
+            margin-right: 15px;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            color: #333;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+            width: 70%;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: linear-gradient(to right, #f39c12, #e74c3c);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: linear-gradient(to right, #e74c3c, #f39c12);
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .articles-container li {
+            margin-bottom: 20px;
+            background: #f4f4f4;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        h3 {
+            margin-top: 0;
+        }
+
+        small {
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+  <div id="navbar-container"></div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      fetch('/navbar_kb.html')
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('navbar-container').innerHTML = data;
+          // Manually run the username script after loading the navbar
+          const username = localStorage.getItem('email');
+          console.log('Username from localStorage:', username); // Debugging log
+          const usernameElement = document.getElementById('username');
+          if (usernameElement) {
+            usernameElement.textContent = `Welcome!`;
+          } else {
+            console.error('Username element not found');
+          }
+        })
+        .catch(error => console.error('Error loading navbar:', error));
+    });
+    </script>
+    <main class="container articles-container">
+        <h2>All Articles</h2>
+        <form action="/articles/search" method="GET">
+            <input type="text" name="query" placeholder="Search articles..." required>
+            <button type="submit">Search</button>
+        </form>
+        <ul>
+            <% articles.forEach(article => { %>
+                <li>
+                    <h3><%= article.title %></h3>
+                    <p><%= article.content %></p>
+                    <small>Created at: <%= article.createdAt.toDateString() %></small>
+                </li>
+            <% }) %>
+        </ul>
+    </main>
+</body>
+
+</html>
+
