@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>iTicket</title>
+  <title>Submit - ITicket</title>
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
@@ -265,18 +265,21 @@
       const category = document.getElementById('category').value;
       const description = document.getElementById('description').value;
       const userEmail = document.getElementById('userEmail').value;
+      const ticketNumber = document.getElementById('ticket-number').value;
+
+      console.log(ticketNumber)
   
       const token = localStorage.getItem('token');
       const messageElement = document.getElementById('message');
   
       try {
-        const response = await fetch('https://home.iticket.tech/tickets/submit-ticket', {
+        const response = await fetch('https://iticket.tech/tickets/submit-ticket', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
           },
-          body: JSON.stringify({ department, priority, subject, category, description, userEmail })
+          body: JSON.stringify({ department, priority, subject, category, description, userEmail, ticketNumber })
         });
   
         if (response.status === 201) {

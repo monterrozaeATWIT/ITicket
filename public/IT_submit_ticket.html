@@ -2,185 +2,185 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>iTicket</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit- iTicket</title>
 
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
-    body {
-      font-family: 'Roboto', sans-serif;
-      margin: 0;
-      padding: 0;
-      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      color: #fff;
-      overflow: hidden;
-    }
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #fff;
+            overflow: hidden;
+        }
 
-    .container {
-      max-width: 800px;
-      width: 100%;
-      background: #ffffff;
-      padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-      transition: transform 0.3s, box-shadow 0.3s;
-      color: #333;
-      animation: slideIn 0.6s ease-out, glow 2s infinite alternate;
-    }
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+            color: #333;
+            animation: slideIn 0.6s ease-out, glow 2s infinite alternate;
+        }
 
-    .container:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
-    }
+        .container:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
+        }
 
-    @keyframes slideIn {
-      from {
-        transform: translateY(100vh);
-        opacity: 0;
-      }
-      to {
-        transform: translateY(0);
-        opacity: 1;
-      }
-    }
+        @keyframes slideIn {
+            from {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
 
-    @keyframes glow {
-      from {
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-      }
-      to {
-        box-shadow: 0 0 40px rgba(0, 0, 0, 0.4);
-      }
-    }
+        @keyframes glow {
+            from {
+                box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            }
+            to {
+                box-shadow: 0 0 40px rgba(0, 0, 0, 0.4);
+            }
+        }
 
-    h1 {
-      text-align: center;
-      color: #333;
-      font-size: 2.5em;
-      margin-bottom: 20px;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      background: -webkit-linear-gradient(#f39c12, #e74c3c);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: fadeIn 1s ease-out;
-    }
+        h1 {
+            text-align: center;
+            color: #333;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background: -webkit-linear-gradient(#f39c12, #e74c3c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: fadeIn 1s ease-out;
+        }
 
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-      }
-      to {
-        opacity: 1;
-      }
-    }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
 
-    .ticket-form {
-      display: flex;
-      flex-direction: column;
-    }
+        .ticket-form {
+            display: flex;
+            flex-direction: column;
+        }
 
-    .form-group {
-      margin-bottom: 20px;
-      animation: zoomIn 0.6s ease-out;
-    }
+        .form-group {
+            margin-bottom: 20px;
+            animation: zoomIn 0.6s ease-out;
+        }
 
-    @keyframes zoomIn {
-      from {
-        transform: scale(0.5);
-        opacity: 0;
-      }
-      to {
-        transform: scale(1);
-        opacity: 1;
-      }
-    }
+        @keyframes zoomIn {
+            from {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
 
-    .form-group label {
-      font-weight: bold;
-      color: #333;
-      margin-bottom: 8px;
-      display: block;
-    }
+        .form-group label {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+            display: block;
+        }
 
-    .form-group select,
-    .form-group input[type="text"],
-    .form-group textarea {
-      width: 100%;
-      padding: 15px;
-      border: 2px solid #ddd;
-      border-radius: 8px;
-      box-sizing: border-box;
-      font-size: 1em;
-      transition: border-color 0.3s;
-      animation: slideIn 0.6s ease-out;
-    }
+        .form-group select,
+        .form-group input[type="text"],
+        .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 1em;
+            transition: border-color 0.3s;
+            animation: slideIn 0.6s ease-out;
+        }
 
-    .form-group select:focus,
-    .form-group input[type="text"]:focus,
-    .form-group textarea:focus {
-      border-color: #007BFF;
-      outline: none;
-    }
+        .form-group select:focus,
+        .form-group input[type="text"]:focus,
+        .form-group textarea:focus {
+            border-color: #007BFF;
+            outline: none;
+        }
 
-    .form-group textarea {
-      resize: none;
-      min-height: 120px;
-    }
+        .form-group textarea {
+            resize: none;
+            min-height: 120px;
+        }
 
-    .form-group input[type="submit"] {
-      width: 100%;
-      padding: 15px;
-      background: linear-gradient(to right, #f39c12, #e74c3c);
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 1.2em;
-      transition: background 0.3s;
-      animation: bounce 0.6s ease-out;
-    }
+        .form-group input[type="submit"] {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(to right, #f39c12, #e74c3c);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.2em;
+            transition: background 0.3s;
+            animation: bounce 0.6s ease-out;
+        }
 
-    @keyframes bounce {
-      0% {
-        transform: translateY(0);
-      }
-      50% {
-        transform: translateY(-10px);
-      }
-      100% {
-        transform: translateY(0);
-      }
-    }
+        @keyframes bounce {
+            0% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
 
-    .form-group input[type="submit"]:hover {
-      background: linear-gradient(to right, #e74c3c, #f39c12);
-      animation: shake 0.6s;
-    }
+        .form-group input[type="submit"]:hover {
+            background: linear-gradient(to right, #e74c3c, #f39c12);
+            animation: shake 0.6s;
+        }
 
-    @keyframes shake {
-      0%, 100% {
-        transform: translateX(0);
-      }
-      20%, 60% {
-        transform: translateX(-10px);
-      }
-      40%, 80% {
-        transform: translateX(10px);
-      }
-    }
-  </style>
+        @keyframes shake {
+            0%, 100% {
+                transform: translateX(0);
+            }
+            20%, 60% {
+                transform: translateX(-10px);
+            }
+            40%, 80% {
+                transform: translateX(10px);
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-  <div class="container">
+<div class="container">
     <h1>Submit Ticket</h1>
 
     <div class="form-group">
@@ -188,152 +188,167 @@
         <input type="text" id="ticket-number" name="ticket-number" readonly>
     </div>
     <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      function generateTicketNumber() {
-        return Math.floor(Math.random() * 1000000);
-      }
+        document.addEventListener('DOMContentLoaded', function () {
+            function generateTicketNumber() {
+                return Math.floor(Math.random() * 1000000);
+            }
 
-      document.getElementById('ticket-number').value = generateTicketNumber();
-    });
+            document.getElementById('ticket-number').value = generateTicketNumber();
+        });
     </script>
 
     <div class="form-group">
-      <label for="user-select">Select User:</label>
-      <select id="user-select" name="user-select">
-        <option value="">Select a user</option>
-      </select>
+        <label for="user-select">Select User:</label>
+        <select id="user-select" name="user-select">
+            <option value="">Select a user</option>
+        </select>
     </div>
-
-
-    <div class="form-group">
-      <label for="user-role">Role:</label>
-      <input type="text" id="user-role" name="user-role" readonly>
-    </div>
-
 
     <form class="ticket-form" id="ticketForm">
-      <input type="hidden" id="userEmail" name="userEmail"> <!-- Hidden field for user email -->
-      <div class="form-group">
-        <label for="Category">Select Category:</label>
-        <select id="category" name="category">
-          <option value="Computer/Hardware">Computer/Hardware</option>
-          <option value="Software/Application">Software/Application</option>
-          <option value="Network/Internet">Network/Internet</option>
-          <option value="Email/Communication">Email/Communication</option>
-          <option value="Security/Cybersecurity">Security/Cybersecurity</option>
-          <option value="Printer/Scanner">Printer/Scanner</option>
-          <option value="Mobile Devices">Mobile Devices</option>
-          <option value="Database/Storage">Database/Storage</option>
-          <option value="User Accounts/Passwords">User Accounts/Passwords</option>
-          <option value="Peripheral Devices (e.g., Keyboard, Mouse)">Peripheral Devices (e.g., Keyboard, Mouse)</option>
-          <option value="Other">Other</option>
-        </select>
-        
-        
-      </div>
-      <div class="form-group">
-        <label for="priority">Priority:</label>
-        <select id="priority" name="priority">
-          <option value="Low">Low</option>
-          <option value="Medium">Medium</option>
-          <option value="High">High</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="subject">Subject:</label>
-        <input type="text" id="subject" name="subject" required>
-      </div>
-      <div class="form-group">
-        <label for="description">Description:</label>
-        <textarea id="description" name="description" required></textarea>
-      </div>
-      <div class="form-group">
-        <input type="submit" value="Submit Ticket">
-      </div>
-      <div id="message"></div>
+        <input type="hidden" id="userEmail" name="userEmail"> <!-- Hidden field for user email -->
+        <input type="hidden" id="userRole" name="userRole"> <!-- Hidden field for user role -->
+        <input type="hidden" id="userDepartment" name="userDepartment"> <!-- Hidden field for user department -->
+        <div class="form-group">
+            <label for="Category">Select Category:</label>
+            <select id="category" name="category">
+                <option value="Computer/Hardware">Computer/Hardware</option>
+                <option value="Software/Application">Software/Application</option>
+                <option value="Network/Internet">Network/Internet</option>
+                <option value="Email/Communication">Email/Communication</option>
+                <option value="Security/Cybersecurity">Security/Cybersecurity</option>
+                <option value="Printer/Scanner">Printer/Scanner</option>
+                <option value="Mobile Devices">Mobile Devices</option>
+                <option value="Database/Storage">Database/Storage</option>
+                <option value="User Accounts/Passwords">User Accounts/Passwords</option>
+                <option value="Peripheral Devices (e.g., Keyboard, Mouse)">Peripheral Devices (e.g., Keyboard, Mouse)</option>
+                <option value="Other">Other</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="priority">Priority:</label>
+            <select id="priority" name="priority">
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="subject">Subject:</label>
+            <input type="text" id="subject" name="subject" required>
+        </div>
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" required></textarea>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Submit Ticket">
+        </div>
+        <div id="message"></div>
     </form>
-  </div>
-  
-  <script>
-    // Fill the user email from localStorage when the form loads
-    document.addEventListener('DOMContentLoaded', function() {
-      const userEmail = localStorage.getItem('email');
-      if (userEmail) {
-        document.getElementById('userEmail').value = userEmail;
-      }
+</div>
 
-      fetchUsers();
+<script>
+    // Fill the user email and role from localStorage when the form loads
+    document.addEventListener('DOMContentLoaded', function () {
+        const userEmail = localStorage.getItem('email');
+        if (userEmail) {
+            document.getElementById('userEmail').value = userEmail;
+        }
+
+        fetchUsers();
     });
 
     async function fetchUsers() {
-  try {
-    const response = await fetch('https://home.iticket.tech/users');
-    if (!response.ok) {
-      console.error('Failed to fetch users');
-      return;
-    }
-    const users = await response.json();
-    const userSelect = document.getElementById('user-select');
+        try {
+            const response = await fetch('https://iticket.tech/users');
+            if (!response.ok) {
+                console.error('Failed to fetch users');
+                return;
+            }
+            const users = await response.json();
+            const userSelect = document.getElementById('user-select');
 
-    users.forEach(user => {
-      const option = document.createElement('option');
-      option.value = user.email; // or user._id if you prefer
-      option.textContent = `${user.name} (${user.email})`;
-      userSelect.appendChild(option);
-    });
-  } catch (error) {
-    console.error('Error fetching users:', error);
-  }
-}
-  
-    // Handle form submission
-    document.getElementById('ticketForm').addEventListener('submit', async function(event) {
-      event.preventDefault();
-  
-      const department = document.getElementById('user-role').value;
-      const priority = document.getElementById('priority').value;
-      const subject = document.getElementById('subject').value;
-      const category = document.getElementById('category').value;
-      const description = document.getElementById('description').value;
-      const userEmail = document.getElementById('user-select').value;
-  
-      const token = localStorage.getItem('token');
-      const messageElement = document.getElementById('message');
-  
-      try {
-        const response = await fetch('https://home.iticket.tech/tickets/submit-ticket', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          },
-          body: JSON.stringify({ department, priority, subject, category, description, userEmail })
-        });
-  
-        if (response.status === 201) {
-    messageElement.textContent = 'Ticket succesfully submitted!';
-          messageElement.style.color = 'green';
-          setTimeout(() => {
-              window.location.href = 'dashboard.html';
-            }, 1000);
-        } else {
-    messageElement.textContent = 'Error submitting ticket :(';
-          messageElement.style.color = 'red';
+            users.forEach(user => {
+                const option = document.createElement('option');
+                option.value = user.email; // or user._id if you prefer
+                option.textContent = `${user.name} (${user.email})`;
+                option.dataset.role = user.role; // store user role in a data attribute
+                userSelect.appendChild(option);
+            });
+        } catch (error) {
+            console.error('Error fetching users:', error);
         }
-      } catch (error) {
-        alert('Error submitting ticket: ' + error.message);
-      }
+    }
+
+    // Handle user selection change to update the role and fetch department
+    document.getElementById('user-select').addEventListener('change', async function () {
+        const selectedOption = this.options[this.selectedIndex];
+        const userRole = selectedOption.dataset.role || '';
+        document.getElementById('userRole').value = userRole;
+
+        const userEmail = selectedOption.value;
+
+        if (userEmail) {
+            try {
+                const response = await fetch(`https://iticket.tech/department?email=${userEmail}`);
+                if (!response.ok) {
+                    console.error('Failed to fetch user department');
+                    return;
+                }
+                const data = await response.json();
+                console.log(data)
+                document.getElementById('userDepartment').value = data.department;
+            } catch (error) {
+                console.error('Error fetching user department:', error);
+            }
+        }
     });
 
+    // Handle form submission
+    document.getElementById('ticketForm').addEventListener('submit', async function (event) {
+        event.preventDefault();
 
-    const userRole = localStorage.getItem('role');
-    if (userRole) {
-        document.getElementById('user-role').value = userRole;
-    }
-  </script>
-  
-  <!-- <script src="scripts.js"></script> -->
-  
-  </body>
-  
-  </html>
+        const department = document.getElementById('userDepartment').value;
+        const priority = document.getElementById('priority').value;
+        const subject = document.getElementById('subject').value;
+        const category = document.getElementById('category').value;
+        const description = document.getElementById('description').value;
+        const userEmail = document.getElementById('user-select').value;
+         const ticketNumber = document.getElementById('ticket-number').value;
+
+        // console.log(ticketNumber)
+
+        const token = localStorage.getItem('token');
+        const messageElement = document.getElementById('message');
+
+        try {
+            const response = await fetch('https://iticket.tech/tickets/submit-ticket', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ department, priority, subject, category, description, userEmail, ticketNumber })
+            });
+
+            if (response.status === 201) {
+                messageElement.textContent = 'Ticket successfully submitted!';
+                messageElement.style.color = 'green';
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 1000);
+            } else {
+                messageElement.textContent = 'Error submitting ticket :(';
+                messageElement.style.color = 'red';
+            }
+        } catch (error) {
+            alert('Error submitting ticket: ' + error.message);
+        }
+    });
+</script>
+
+<!-- <script src="scripts.js"></script> -->
+
+</body>
+
+</html>

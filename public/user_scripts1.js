@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const role = document.getElementById('role').value;
 
             try {
-                const response = await fetch('https://home.iticket.tech/users/signup', {
+                const response = await fetch('https://iticket.tech/users/signup', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const messageElement = document.getElementById('message');
 
             try {
-                const response = await fetch('https://home.iticket.tech/users/login', {
+                const response = await fetch('https://iticket.tech/users/login', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        const response = await fetch(`https://home.iticket.tech/user/tickets?userEmail=${email}`);
+        const response = await fetch(`https://iticket.tech/user/tickets?userEmail=${email}`);
         if (!response.ok) {
             console.error('Network response was not ok');
             return;
@@ -94,6 +94,7 @@ document.addEventListener('DOMContentLoaded', function() {
         tickets.forEach(ticket => {
             const row = document.createElement('tr');
             row.innerHTML = `
+                <td>${ticket.ticketID}</td>
                 <td>${ticket.subject}</td>
                 <td>${ticket.category}</td>
                 <td>${ticket.department}</td>
@@ -109,7 +110,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
 
     async function viewTicket(id) {
-        const response = await fetch(`https://home.iticket.tech/tickets/${id}`);
+        const response = await fetch(`https://iticket.tech/tickets/${id}`);
         if (!response.ok) {
             console.error('Network response was not ok');
             return;

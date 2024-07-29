@@ -78,6 +78,19 @@ app.get('/', (req, res) => {
     }
 });  
 
+app.get('/department', async (req, res) => {
+    const userEmail = req.query.email;
+
+    try {
+        const user = await User.findOne({ email: userEmail });
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        res.json({ department: user.role });
+    } catch (error) {
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
 app.get('/tickets/statistics', async (req, res) => {
     try {
         const tickets = await Ticket.find();
@@ -143,17 +156,29 @@ app.post('/users/login', async (req, res) => {
 });
 
 // Define the PUT route for updating the ticket status
-app.put('/tickets/:id/status', async (req, res) => {
+app.put('/ticket/:id/status', async (req, res) => {
+    const { id } = req.params;
+    const { status } = req.body;
+
     try {
-        const ticketId = req.params.id;
-        const { status } = req.body;
-        const updatedTicket = await Ticket.findByIdAndUpdate(ticketId, { status }, { new: true });
-        if (!updatedTicket) {
+        const ticket = await Ticket.findById(id);
+        if (!ticket) {
             return res.status(404).send('Ticket not found');
         }
-        res.status(200).json(updatedTicket);
+
+        // Add new status change
+        ticket.statusChanges.push({
+            status: status,
+            timestamp: new Date()
+        });
+        
+        // Update the current status
+        ticket.status = status;
+        await ticket.save();
+
+        res.status(200).send('Status updated successfully');
     } catch (error) {
-        res.status(400).send('Error updating ticket status: ' + error.message);
+        res.status(500).send('Error updating status: ' + error.message);
     }
 });
 
@@ -183,10 +208,10 @@ app.get('/tickets/:id', async (req, res) => {
 // Route to create a new ticket
 app.post('/tickets/submit-ticket', async (req, res) => {
     try {
-        const { department, priority, subject, category, description, userEmail } = req.body;
+        const { department, priority, subject, category, description, userEmail, ticketNumber} = req.body;
         const user = await User.findOne({ email: userEmail });
         if (!user) {
-            return res.status(400).send('User not found');
+            return res.status(400).send('User not found :(');
         }
         const newTicket = new Ticket({
             department,
@@ -196,6 +221,7 @@ app.post('/tickets/submit-ticket', async (req, res) => {
             description,
             user: user._id,
             userEmail,
+            ticketID: ticketNumber,
             status: 'Open' // Default status
         });
         await newTicket.save();

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Tickets - IT Ticketing System</title>
+    <title>View Tickets - ITicket</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
@@ -179,7 +179,7 @@
     <script>
         async function fetchUserTickets() {
             const token = localStorage.getItem('token');
-            const response = await fetch('https://home.iticket.tech/user/tickets', {
+            const response = await fetch('https://iticket.tech/user/tickets', {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -208,7 +208,7 @@
 
         async function viewTicket(id) {
             const token = localStorage.getItem('token');
-            const response = await fetch(`https://home.iticket.tech/tickets/${id}`, {
+            const response = await fetch(`https://iticket.tech/tickets/${id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
