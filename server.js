@@ -23,8 +23,6 @@ app.use(favicon(__dirname + '/favicon.ico'));
 // MongoDB Connection
 //const mongoURI = 'mongodb://localhost:27017/ticketing_system';
 
-const mongoURI = "mongodb+srv://monterrozae:GjA7g2dsxhV32FpB@cluster0.dzeifv9.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-
 mongoose.connect(mongoURI)
     .then(() => console.log('MongoDB connected'))
     .catch(err => console.log('MongoDB connection error:', err));
